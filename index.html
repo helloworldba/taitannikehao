@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#081a23"><meta name="description" content="在北大西洋月色中探索泰坦尼克号：自由漫游、室内空间、动态烟雾与海洋声景。"><title>TITANIC · 北大西洋之夜</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23081a23'/%3E%3Ctext x='16' y='24' text-anchor='middle' font-size='26' fill='%23c6a774'%3E⚓%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="./style.css"><script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script></head>
+<body>
+ <header class="masthead"><a href="./" class="brand"><span class="anchor">⚓</span><span>ATLANTIC<small>北大西洋 · 1912</small></span></a><span class="edition">一场穿越月色的航行</span><div class="top-actions"><button id="archiveButton" aria-haspopup="dialog" aria-controls="archive">巨轮档案</button><button id="storyButton" aria-haspopup="dialog" aria-controls="story">爱情故事</button><button id="musicButton" aria-pressed="false" title="播放背景音乐（循环）">♪ <span>播放音乐</span></button><button id="audioButton" aria-pressed="false">♫ <span>开启环境声音</span></button><button id="helpButton" aria-label="查看操作说明">?</button><button id="fullButton" aria-label="切换全屏">⛶</button></div></header>
+ <main>
+  <section class="stage" aria-label="交互式三维场景">
+   <canvas id="world" tabindex="0" aria-label="泰坦尼克号三维视图，拖动旋转，滚轮缩放"></canvas>
+   <div class="heading"><p class="eyebrow">NORTH ATLANTIC, 1912</p><h1 id="sceneTitle">TITANIC</h1><p id="shipChineseName" aria-label="泰坦尼克号"><span aria-hidden="true">泰</span><span aria-hidden="true">坦</span><span aria-hidden="true">尼</span><span aria-hidden="true">克</span><span aria-hidden="true">号</span></p><p id="memoryQuote"><span>我甚至连他的一张照片都没有，</span><span>他只活在我的记忆里……</span></p><p id="sceneSubtitle">北大西洋之夜</p><span class="title-rule"></span><p id="sceneDescription">月色落在海面，<br>灯火沿着巨轮缓缓延伸。</p></div>
+   <div class="view-tag"><span id="viewName">北大西洋之夜</span><i></i><span>泰坦尼克号 · 实时 3D</span></div>
+   <div class="load-status" id="loadStatus" role="status">正在驶入北大西洋…</div>
+   <div class="error" id="error" hidden><h2>暂时无法载入三维场景</h2><p id="errorText"></p><button onclick="location.reload()">重新载入</button></div>
+   <div class="stage-bottom"><div class="compass" aria-hidden="true"><span>N</span><b id="compassNeedle">↑</b></div><div class="camera-buttons"><button id="flyButton" aria-pressed="false">⌖ 自由漫游</button><button id="tourButton" aria-pressed="false">▷ 25 秒巡航</button><button id="resetButton" title="回到当前场景的初始视角">↺ 重置视角</button></div><span class="navigation-tip" id="navigationTip">拖动旋转 · 滚轮缩放 · 右键平移</span></div>
+   <div id="tourProgress" class="tour-progress" hidden><span></span></div>
+   <div id="flyPad" class="fly-pad" hidden><button data-move="up" aria-label="向前">↑</button><div><button data-move="left" aria-label="向左">←</button><button data-move="down" aria-label="向后">↓</button><button data-move="right" aria-label="向右">→</button></div><div><button data-move="rise" aria-label="上升">＋</button><button data-move="fall" aria-label="下降">−</button></div></div>
+  </section>
+  <aside class="settings" id="settings"><div class="panel-title"><span>场景控制</span><span class="muted">SETTINGS</span></div><div class="section-label">光线氛围 <span id="lightLabel">MOONLIGHT</span></div><div class="presets" role="group" aria-label="光线预设"><button data-preset="day">☀ 日光</button><button data-preset="sunset">◒ 夕阳</button><button data-preset="moon" aria-pressed="true" class="active">☾ 月夜</button></div><label class="range-label" for="exposure">光线亮度 <output id="exposureValue">100%</output></label><input id="exposure" type="range" min="40" max="180" value="100"><label class="range-label" for="fog">海雾浓度 <output id="fogValue">20%</output></label><input id="fog" type="range" min="0" max="100" value="20"><div class="divider"></div><label class="switch-row" for="smoke"><span>动态烟雾<small>烟囱上方的风与蒸汽</small></span><input id="smoke" type="checkbox" role="switch" checked></label><label class="switch-row" for="waves"><span>海浪动态<small>随时间起伏的海面</small></span><input id="waves" type="checkbox" role="switch" checked></label><label class="switch-row" for="rotate"><span>自动环绕<small>缓慢欣赏船体全貌</small></span><input id="rotate" type="checkbox" role="switch"></label><div class="divider"></div><label class="range-label" for="volume">环境音量 <output id="volumeValue">35%</output></label><input id="volume" type="range" min="0" max="100" value="35"><p class="sound-note" id="soundNote">点击上方“开启环境声音”，听见海浪与轮机。</p><label class="quality-label" for="quality">显示质量<select id="quality"><option value="balanced">均衡</option><option value="high">细腻</option><option value="low">流畅</option></select></label><p class="scene-note">艺术化场景重建<br>室内通过下方地点切换</p></aside>
+ </main>
+ <nav class="destinations" aria-label="选择探索地点"><div class="destination-label">选择探索地点<small>EXPLORE THE SHIP</small></div><button data-location="exterior" class="selected" aria-pressed="true"><span class="place-icon">♧</span><span>巨轮全景<small>THE OCEAN LINER</small></span><b>01</b></button><button data-location="bow"><span class="place-icon">⌁</span><span>船首甲板<small>THE BOW</small></span><b>02</b></button><button data-location="staircase"><span class="place-icon">♜</span><span>豪华大阶梯<small>GRAND STAIRCASE</small></span><b>03</b></button><button data-location="suite"><span class="place-icon">▱</span><span>头等舱套房<small>FIRST CLASS SUITE</small></span><b>04</b></button><button data-location="dining"><span class="place-icon">♙</span><span>烛光餐厅<small>DINING SALOON</small></span><b>05</b></button></nav>
+ <footer><span id="locationCaption">41°43′ N · 49°56′ W <i>北大西洋 · 氛围场景</i></span><span>A VOYAGE REMEMBERED</span><button id="settingsToggle">场景设置 ☷</button></footer>
+ <dialog id="help"><button id="helpClose" class="dialog-close" aria-label="关闭">×</button><p class="eyebrow">WELCOME ABOARD</p><h2>开始你的航行</h2><p>拖动旋转视角，滚轮缩放，右键拖动平移。手机上单指旋转、双指缩放和平移。</p><p>选择“自由漫游”后，拖动改变朝向，用 W / A / S / D 前后左右移动，Q / E 升降，Shift 加速。手机可使用画面左下方的方向键。</p><p>“25 秒巡航”会带你从船首掠过船侧，再升空拉远。按 Esc 或再次点击按钮可结束漫游或巡航。</p><p class="muted">本场景为艺术化重建；三个室内是独立空间，没有全船连续通行或碰撞限制。</p><button id="helpDone" class="gold-button">登船探索</button></dialog>
+ <dialog id="story" aria-labelledby="storyTitle"><button id="storyClose" class="dialog-close" aria-label="关闭爱情故事" autofocus>×</button><h2 id="storyTitle">爱情故事</h2><p class="story-intro">虽然，巨轮沉没了……但是这段浪漫爱情故事，永远深深的印记在人们心中：“永不沉没”，直到永远……</p><div class="story-copy"><p>1985年，“泰坦尼克号”的沉船遗骸在北大西洋两英里半的海底被发现。美国探险家洛维特亲自潜入海底在船舱的墙壁上看见了一幅画，洛维特的发现立刻引起了一位老妇人的注意。已经是102岁高龄的罗丝声称她就是画中的少女。在潜水舱里，罗丝开始叙述她当年的故事。</p><p>1912年4月10日，被称为“世界工业史上的奇迹”的“泰坦尼克号”从英国的南安普顿出发驶往美国纽约。富家少女罗丝与母亲及未婚夫卡尔一道上船，另一边，不羁的少年画家杰克靠在码头上的一场赌博赢到了船票。罗丝早就看出卡尔是个十足的势利小人，从心底里不愿嫁给他，甚至打算投海自尽。关键时刻，杰克一把抱住了少女罗丝，两个年轻人由此相识。为排解少女心中的忧愁，杰克带罗丝不断发现生活的快乐之处。</p><p>很快，美丽活泼的罗丝与英俊开朗的杰克相爱了，罗丝脱下衣服，戴上卡尔送她的项链，让杰克为她画像，以此作为他们爱情的见证。当他俩发生关系时，“泰坦尼克号”撞上了冰山。惨绝人寰的悲剧发生了，泰坦尼克号上一片混乱，在危急之中，人类本性中的善良与丑恶、高贵与卑劣更加分明。杰克把生存的机会让给了爱人罗丝，自己则在冰海中被冻死。老态龙钟的罗丝讲完这段哀恸天地的爱情之后，把那串价值连城的珠宝沉入海底，让它陪着杰克和这段爱情长眠海底。</p></div><p class="story-source">注：此故事来自影视作品（泰坦尼克号）。</p><button id="storyDone" class="gold-button">返回航行</button></dialog>
+<dialog id="archive" aria-labelledby="archiveTitle">
+ <button id="archiveClose" class="dialog-close" aria-label="关闭巨轮档案" autofocus>×</button>
+ <p class="eyebrow">THE SHIP'S ARCHIVE</p><h2 id="archiveTitle">泰坦尼克号 <small>RMS Titanic</small></h2>
+ <div class="archive-stats"><div><strong>269.06<small>米</small></strong><span>船舶总长</span></div><div><strong>28.19<small>米</small></strong><span>船宽</span></div><div><strong>21<small>节</small></strong><span>巡航速度 · 约 39 公里/小时</span></div></div>
+ <section><h3>基本资料</h3><dl class="archive-facts"><div><dt>所属公司</dt><dd>白星航运公司（White Star Line）</dd></div><div><dt>建造船厂</dt><dd>贝尔法斯特 · 哈兰德与沃尔夫船厂</dd></div><div><dt>船厂编号</dt><dd>401</dd></div><div><dt>注册港</dt><dd>利物浦</dd></div><div><dt>总登记吨位</dt><dd>约 46,329 总登记吨</dd></div><div><dt>首航目的地</dt><dd>美国纽约</dd></div></dl><p class="archive-note">总登记吨位衡量船内空间容积，并非船舶重量。长度采用船舶总长口径，公制数值由英制数据换算。</p></section>
+ <section><h3>船上生活</h3><div class="archive-life"><article><h4>头等舱</h4><p>客舱与休息、阅读等公共空间共同构成跨洋旅途中的日常生活。本场景的套房展现舷窗与暖灯相伴的私人空间。</p></article><article><h4>大阶梯</h4><p>头等舱大阶梯连接多层甲板，也是通向客舱、休息室和散步甲板的重要通道。</p></article><article><h4>餐厅</h4><p>用餐与社交是船上生活的一部分。本场景以餐桌、瓷器和柔和灯光，呈现晚宴的氛围。</p></article><article><h4>甲板</h4><p>散步甲板为旅客提供观海与散步的空间。你可以通过下方地点栏，切换到船首甲板或巨轮全景。</p></article></div></section>
+ <section><h3>重要时间</h3><ol class="archive-timeline"><li><time>1911 年 5 月 31 日</time><p>在贝尔法斯特下水。</p></li><li><time>1912 年 4 月 10 日</time><p>从南安普顿启程首航，计划驶往纽约，途中停靠瑟堡与皇后镇（今科夫）。</p></li><li><time>1912 年 4 月 14 日 · 23:40</time><p>在北大西洋与冰山碰撞。</p></li><li><time>1912 年 4 月 15 日 · 02:20</time><p>泰坦尼克号沉没。上述碰撞与沉没时刻采用当时船上时间。</p></li><li><time>1985 年 9 月 1 日</time><p>美法联合考察队发现沉船遗骸，罗伯特·巴拉德与让-路易·米歇尔分别领导两国团队。</p></li></ol></section>
+ <section class="archive-sources"><h3>这里介绍真实船舶历史：</h3><div class="history-detail">
+<h4 class="history-question">为何号称“永不沉没”却沉了？</h4>
+<section><h4>真实事件大纲</h4>
+<p class="history-lead">1912 年 4 月，泰坦尼克号在首航途中因撞冰山沉没，造成超 1500 人遇难，仅 700 余人获救，是和平时期最严重的海难之一。</p>
+<p>“泰坦尼克”号是英国白星航运公司旗下的一艘奥林匹克级大型高速豪华客轮，由哈兰与沃尔夫造船厂于1912年建成。1912年4月10日，它从英国南安普敦出发，开始其前往美国纽约的处女航。</p>
+<p>4月14日航行中多次收到沿途船舶的冰情电报，船长曾据此改航，但为了创航行纪录而保持高速航行。后续又收到航线正前方有冰山的关键报告，但报务员因处理旅客商业通信未予理会，船长未能知晓。船舶驶入冰区后仍按原航向行驶，23时40分临近冰山，规避不及致右舷前部水密舱被划穿，至少5个水密舱进水，远超其最多承受4个水密舱进水的抗沉设计。</p>
+<p>船只随后下沉，次日0时15分左右发出呼救信号，但最近的“加州人号”因电报机关闭未收到，只有“卡帕西亚号”赶来救援。船体在2时20分左右断裂成两半后沉没。</p>
+<p>船上共载有约2224人，最终仅705人被英籍卡帕西亚号救起，超过1500人遇难。救生艇数量严重不足，仅配备20艘，可容纳1178人，且疏散过程混乱。</p>
+<p>此次海难直接促使1914年《国际海上人命安全公约》（SOLAS）的制定，确立了救生艇充足配备、24小时无线电值守等安全标准，并成立了国际冰情巡逻队。</p></section>
+<section><h4>沉船原因</h4>
+<h5>一、设计存在先天缺陷</h5><p>船体虽然有 16 个水密舱，但隔舱壁没有安装到顶，一旦进水超过 4 个舱，海水就会漫过舱壁顶端蔓延到其他舱段，导致整船沉没。</p>
+<h5>二、材料抗不住低温</h5><p>当时的造船钢材在低温下会变脆，固定船壳的铆钉含有杂质，撞击冰山后容易断裂，导致船体裂开大口子。</p>
+<h5>三、人为失误叠加</h5><ol><li>船长为了创纪录保持高速航行，收到冰情警告后未减速。</li><li>瞭望员没有望远镜，发现冰山时已来不及躲避。</li><li>报务员忙于处理乘客商业电报，忽略了附近船只发出的关键冰情警报。</li></ol></section>
+<section><h4>人员幸存真相</h4>
+<h5>伤亡数据</h5><p>船上共约 2224 人，最终仅 705 人获救，存活率约 32%，其中女性存活率远高于男性。</p>
+<h5>中国乘客遭遇</h5><p>船上有 8 名中国乘客，6 人幸存，2 人遇难，幸存者获救后因美国《排华法案》面临歧视和困境。</p>
+<h5>逃生混乱</h5><p>虽然规定了妇女儿童优先，但三等舱乘客通往甲板的通道曾被关闭，且部分救生艇未坐满就下水，导致可容纳 1178 人的救生艇实际只救了一部分人。</p></section>
+<section><h4>残骸现状与打捞难题</h4>
+<h5>发现与位置</h5><p>1985 年由海洋探险家罗伯特·巴拉德发现，残骸位于北大西洋约 3800 米深处，断成两截。</p>
+<h5>正在消失</h5><p>残骸长期受洋流侵蚀和盐蚀细菌攻击，甲板室等结构正在倒塌，专家预测预计 2030 年左右残骸可能彻底消失。</p>
+<h5>为何不打捞</h5><ul><li><strong>尊重逝者：</strong>这里是 1500 多人的墓地，打捞被视为打扰安息。</li><li><strong>技术难度：</strong>水深压力大，残骸脆弱，一碰就碎，目前技术难以完整打捞。</li><li><strong>法律限制：</strong>国际公约保护沉船遗址，禁止商业打捞。</li></ul>
+<h5>泰坦号事故</h5><p>2023 年 6 月，一家美国公司运营的观光潜水器“泰坦号”在探访残骸途中发生内爆，5 人遇难，再次警示深海风险。</p></section>
+<section><h4>真实历史名人和细节<span class="history-subheading">电影中有出现</span></h4>
+<h5>船上富豪遇难</h5><ol class="history-people"><li><strong>约翰・阿斯特四世：</strong>当时世界首富，和怀孕妻子上船，把妻子送上救生艇，自己留在船上遇难。</li><li><strong>伊西・施特劳斯（梅西百货创始人）与妻子艾达：</strong>妻子拒绝独自逃生，选择和丈夫一起留在船上，双双遇难。</li><li><strong>本杰明・古根海姆：</strong>钢铁大亨，换上正装，说“要像绅士一样赴死”，遇难。</li><li><strong>总设计师安德鲁斯：</strong>留在船上评估破损，一直告知大家船一定会沉没，最终遇难。</li><li><strong>船长爱德华・史密斯：</strong>选择与船共存亡。</li><li><strong>白星公司董事伊斯梅：</strong>男乘客里少数成功登上救生艇逃生的人，事后饱受舆论唾骂。</li></ol>
+<h5>真实乐队</h5><p>船上 8 人乐队，沉船时一直在甲板演奏乐曲安抚乘客，直到最后一刻全部遇难。电影乐队的情节完全真实。</p>
+<h5>中国：幸存者（6 名）</h5><p>船上 8 名华人劳工，6 人幸存。其中有一人依靠门板漂浮等待救援，这个情节被电影借鉴。当年幸存者遭受西方媒体的歧视抹黑，很长一段时间被历史淡化。</p></section>
+<section><h4>灾难带来的改变<span class="history-subheading">重大影响</span></h4><p>这场海难震惊全球，直接推动国际海事法规改革：</p><ol><li>强制要求救生艇数量满足船上全部人员，不再只按吨位配给。</li><li>24 小时不间断无线电值守，必须持续监听求救信号。</li><li>北大西洋设立国际冰山巡逻队，监测冰山、预警航线。</li><li>船舶安全设计标准全面升级。</li></ol></section>
+<aside class="history-declaration"><h4>注 · 声明</h4><p>上述“相关资料”故事、资料、内容自于“百度百科”及网络，未存在任何商业行为。</p></aside>
+</div>
+</section>
+ <button id="archiveDone" class="gold-button">返回航行</button>
+</dialog>
+
+ <script src="./archive.js" defer></script>
+ <script src="./story.js" defer></script><script src="./music.js" defer></script><script src="./quote.js" defer></script>
+ <script type="module" src="./app.js"></script>
+</body></html>
