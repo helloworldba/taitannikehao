@@ -5,7 +5,7 @@
  <main>
   <section class="stage" aria-label="交互式三维场景">
    <div class="heading"><p class="eyebrow">NORTH ATLANTIC, 1912</p><h1 id="sceneTitle">TITANIC</h1><p id="shipChineseName" aria-label="泰坦尼克号"><span aria-hidden="true">泰</span><span aria-hidden="true">坦</span><span aria-hidden="true">尼</span><span aria-hidden="true">克</span><span aria-hidden="true">号</span></p><p id="memoryQuote"><span>我甚至连他的一张照片都没有，</span><span>他只活在我的记忆里……</span></p><p id="sceneSubtitle">北大西洋之夜</p><span class="title-rule"></span><p id="sceneDescription">月色落在海面，<br>灯火沿着巨轮缓缓延伸。</p></div>
-   <div class="scene-viewport">
+   <div class="scene-viewport"><button id="exitSceneFull" hidden aria-label="退出全屏浏览">✕ 退出全屏</button>
    <canvas id="world" tabindex="0" aria-label="泰坦尼克号三维视图，拖动旋转，滚轮缩放"></canvas>
    <div class="view-tag"><span id="viewName">北大西洋之夜</span><i></i><span>泰坦尼克号 · 实时 3D</span></div>
    <div class="load-status" id="loadStatus" role="status">正在驶入北大西洋…</div>
